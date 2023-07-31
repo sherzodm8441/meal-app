@@ -5,9 +5,278 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #e0ffff;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+
+
+.search {
+  position: relative;
+  margin-left: 25px;
+  margin-top: 10px;
+  margin-bottom: 30px;
+}
+
+.searchInput {
+  display: flex;
+}
+
+.searchBox {
+  width: 200px;
+  height: auto;
+  border-radius: 10px;
+  padding: 4px;
+  border: 1px solid grey;
+  outline: none;
+}
+
+.searchResult {
+  position: absolute;
+  border-radius: 10px;
+  border: 1px solid black;
+  background-color: white;
+  padding: 5px;
+  border-top: 0;
+  border-top-left-radius: 0%;
+  border-top-right-radius: 0%;
+  width: 200px;
+}
+
+.searchIng {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.searchIng:hover {
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); /* Replace with desired box shadow style */
+}
+
+.ingredientList{
+  border: 1px solid black;
+  border-radius: 10px;
+  min-height: 60px;
+  width: 300px;
+  margin-left: 20px;
+  background-color: white;
+  padding: 5px 10px 5px;
+}
+
+.listIng {
+  display: flex;
+  max-height: fit-content;
+  align-items: baseline;
+  justify-content: space-between;
+  margin: 0;
+}
+.addButton {
+  border: none;
+  height: fit-content;
+  cursor: pointer;
+}
+.deleteButton {
+  border: none;
+  height: fit-content;
+  cursor: pointer;
+}
+
+.ingredient {
+  padding: 5px;
+}
+.ingPTag{
+  padding: 0;
+  margin: 0;
+  margin-right: 5px;
+}
+
+.addedPTag{
+  padding: 0;
+  margin: 3px;
+}
+
+.links{ 
+  /* position: absolute; */
+  display: flexbox;
+  justify-content: center;
+  /* max-width: 50vw; */
+  width: 100vw;
+  margin-left: auto;
+  margin-right: auto;
+  align-items: center;
+  
+}
+
+.link {
+  /* position: abs; */
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 15px;
+  padding: 15px;
+  flex: auto;
+  border: 1px solid black;
+  border-radius: 10px;
+  justify-content: center;
+  width: fit-content;
+  color: #e0ffff;
+  background-color:#0d4d63;
+}
+
+#link {
+  padding-bottom: 5px;
+  color: inherit;
+  text-decoration: none;
+  display: flex;
+}
+
+.image {
+  width: 400px;
+  height: auto;
+  border-radius: 10px;
+}
+
+.ingredientStatus {
+  border: 1px solid black;
+  border-radius: 10px;
+  width: fit-content;
+  display: flex;
+  padding: 10px;
+  padding-top: 0;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.usedListsDiv {
+  margin-right: 0px;
+  border-right: 1px solid black;
+  padding: 5px;
+  padding-right: 10px;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+.missedListsDiv {
+  margin-left: 0px;
+  /* border-left: 1px solid white; */
+  padding: 5px;
+  padding-left: 10px;;
+  padding-bottom: 0;
+  margin: 0;
+}
+
+p {
+  margin: 0;
+  margin-top: 5px;
+}
+
+#ingTitle{
+  color: lightcyan;
+}
+
+.view{
+  display: flex;
+}
+
+.sideBar{
+  border: 1px solid black;
+  background-color: #0d4d63;
+  height: 100vh;
+  position: fixed;
+  /* margin-top: 50px; */
+}
+
+#spoonBtn {
+  background-color: lightcyan;
+  color: #0d4d63;
+  border: none;
+  border-radius: 5px;
+}
+
+.linkNHeart{
+  display: flex;
+  justify-content: space-between;
+  margin: 1px;
+}
+
+.recipesView{
+  display: flex;
+  margin-top: 75px;
+  /* justify-content: center; */
+  /* align-items: center; */
+}
+
+.ingBox {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.ingredientList {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  background-color: #0d4d63;
+  /* position: fixed; */
+  width: 100%;
+  /* z-index: 1; */
+}
+
+ul{
+  list-style: none;
+}
+
+ul li {
+  display: inline-block;
+}
+
+.navLink {
+  text-decoration: none;
+  margin-right: 15px;
+  color: lightcyan;
+}
+
+.recipe{
+  align-items: center;
+  justify-content: center;
+}
+
+.recipeTitle{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
+}
+
+.video {
+  display: flex;
+  justify-content: center;
+  margin: 20px;
+  flex-direction: column;
+  margin-left: auto;
+  margin-right: auto;
+  align-items: center;
+}
+
+iFrame{
+  /* margin-left: auto;
+  margin-right: auto; */
+}
+
+.ratings{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }

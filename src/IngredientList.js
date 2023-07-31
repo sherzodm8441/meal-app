@@ -8,12 +8,9 @@ function IngredientList(props){
         <div className="ingredientList">
             {
                 props.ingredients.map((ingredient) => {
-                    return( <div>
-                        <p>{ingredient}</p>
-                        <div><Button 
-                        size="small"
-                        onClick={()=> props.deleteIngredient(ingredient)}
-                        >Delete</Button></div>
+                    return( <div className="listIng">
+                        <p className="addedPTag">{ingredient}</p>
+                        <button className="deleteButton" type="button" onClick={()=> props.deleteIngredient(ingredient)}>x</button>
                         </div>)
                 })
             }
