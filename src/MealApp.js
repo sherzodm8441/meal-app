@@ -12,11 +12,9 @@ import { pink } from "@mui/material/colors";
 
 function MealApp(){
     const [ingredients, setIngredients] = useState(JSON.parse(localStorage.getItem('ingredients')) || []);
-    // const [recipe, setRecipe] = useState(JSON.stringify(callData, null, 2));
     const [recipe, setRecipe] = useState(JSON.parse(localStorage.getItem('recipe')) || []);
     const [recipes, setRecipes] = useState([])
     const [hearts, setHearts] = useState(JSON.parse(localStorage.getItem("hearts")) || {});
-    // const [ratings, setRatings] = useState({});
 
 
     function addIngredient(item){

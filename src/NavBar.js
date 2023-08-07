@@ -10,6 +10,7 @@ function NavBar(){
                     <li><Link className="navLink">Favorites</Link></li>
                     <li><Link className="navLink">Searches</Link></li>
                     <li><Link className="navLink">Account</Link></li>
+                    <li><Link className="navLink" key={'login'}to={'/login'}>Login</Link></li>
                 </ul>
             </div>
         </div>
