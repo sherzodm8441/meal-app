@@ -5,7 +5,6 @@ import SearchBar from "./SearchBar";
 import IngredientList from "./IngredientList";
 import './index.css';
 import { Link } from "react-router-dom";
-import { callData } from "./TestCall";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { pink } from "@mui/material/colors";
 
@@ -16,7 +15,6 @@ function MealApp(){
     const [ingredients, setIngredients] = useState(JSON.parse(localStorage.getItem('ingredients')) || []);
     const [recipe, setRecipe] = useState(JSON.parse(localStorage.getItem('recipe')) || []);
     const [recipes, setRecipes] = useState([])
-    // const [hearts, setHearts] = useState(JSON.parse(localStorage.getItem("hearts")) || {});
     const [hearts, setHearts] = useState((userObj && userObj.favorites) ? userObj.favorites : []);
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || {});
 
@@ -30,13 +28,6 @@ function MealApp(){
     function deleteIngredient(item){
         setIngredients(prevIngredients => prevIngredients.filter(prevIngredient => prevIngredient !== item));
     }
-
-
-    // function updateRatings(id, event){
-    //     let obj = {...ratings};
-    //     obj[id] = event.target.value;
-    //     setRatings(obj);
-    // }
 
 
     async function updateHearts(id){
@@ -77,7 +68,6 @@ function MealApp(){
 
         axios.request(config)
         .then((response) => {
-        // console.log(JSON.stringify(response.data));
             console.log(response.data);
             let userObj = {...response.data, accessToken: user.accessToken};
             localStorage.setItem("user", JSON.stringify(userObj));
@@ -97,10 +87,6 @@ function MealApp(){
     useEffect(() => {
         localStorage.setItem("ingredients", JSON.stringify(ingredients));
     }, [ingredients])
-
-    useEffect(() => {
-        // localStorage.setItem("hearts", JSON.stringify(hearts));
-    }, [hearts]);
     
     async function getRecipeSpoon(){
         await axios.get('https://api.spoonacular.com/recipes/findByIngredients', {
@@ -117,7 +103,6 @@ function MealApp(){
             }
             })
             .then(response => {
-                // setRecipe(JSON.stringify(response.data, null, 2));
                 setRecipe(response.data);
                 localStorage.setItem("recipe", JSON.stringify(response.data));
                 console.log(response.data); 
@@ -127,31 +112,7 @@ function MealApp(){
             }
         );
     }
-    // async function getVideo(){
-    //     await axios.get('https://youtube.googleapis.com/youtube/v3/search', {
-    //         params: {  
-    //             q: "how to make pizza",
-    //             key: process.env.REACT_APP_YT_KEY
-    //         }
-    //         })
-    //         .then(response => {
-    //             // setRecipe(JSON.stringify(response.data, null, 2));
-    //             // setRecipe(response.data);
-    //             // localStorage.setItem("recipe", JSON.stringify(response.data));
-    //             console.log(response.data); 
-    //         })
-    //         .catch(error => {
-    //             console.log(error)
-    //         }
-    //     );
-    // }
-
-    // useEffect(()=> {
-    //     initialHearts()
-    //     console.log(hearts)
-
-    // }, [recipe])
-
+    
     useEffect(() => {
         setRecipes(
             recipe.map((currElem) => {
@@ -203,29 +164,3 @@ function MealApp(){
 }
 
 export default MealApp;
-
-
-// function getRecipe(){
-//         axios.get(`https://www.themealdb.com/api/json/v1/1/random.php`)
-//                 .then(res => {
-//                     setRecipe(res.data.meals);
-//                     console.log(res.data.meals);
-//                 })
-//                 .catch(err => console.log(err)) 
-//     }
-
-    // console.log(process.env.REACT_APP_SPOONACULAR_KEY);
-
-    //<pre>{JSON.stringify(meal?.meals[0], null, 2)}</pre>
-
-    // setRecipes([
-        //     <Link  to={`/recipes/${callData[0]["id"]}`} state={{data : callData}}>book</Link>
-        // ])
-
-        // setRecipes([
-        //     <Link  to="/recipes/1">book</Link>,
-        //     <Link  to="/recipes/2">book</Link>,
-        //     <Link  to="/recipes/3">book</Link>,
-        //     // <Link key={4} to="/recipes/4">book</Link>
-        // ])
-        // {/* <Link to="/recipes/1">book</Link> */}

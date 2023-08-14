@@ -5,10 +5,14 @@ import axios from "axios";
 
 
 function Recipe(){
+    let userObj = JSON.parse(localStorage.getItem('user'));
+
     const location = useLocation();
     const { data } = location.state;
-    const [ratings, setRatings] = useState(JSON.parse(localStorage.getItem("ratings")) || {});
+    const [ratings, setRatings] = useState((userObj && userObj.ratings) ? userObj.ratings : []);
     const [videos, SetVideos] = useState(JSON.parse(localStorage.getItem("videos")) || {});
+    const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || {});
+
 
     useEffect(()=>{
         if(!videos[data["id"]]){
@@ -16,15 +20,55 @@ function Recipe(){
         }
     }, [])
 
-    useEffect(()=>{
-        localStorage.setItem("ratings", JSON.stringify(ratings));
-    }, [ratings])
+    async function updateRatings(id, event){
+        let index = ratings.findIndex(({recipeId})=>{
+            return recipeId == id;
+        })
 
-    function updateRatings(id, event){
-        let obj = {...ratings};
+        let arr = [];
+        arr = [...ratings];
+
+        if(index > -1){
+            arr.splice(index, 1)
+        }
+        
         console.log(event.target.value);
-        obj[id] = event.target.value;
-        setRatings(obj);
+        arr.push({
+            recipeId: id,
+            rating: event.target.value
+        });
+        
+
+        let data = JSON.stringify({
+            "ratings": arr,
+        });
+
+
+        let config = {
+        method: 'put',
+        maxBodyLength: Infinity,
+        url: 'http://localhost:3001/api/user',
+        headers: { 
+            'token': `Bearer ${user.accessToken}`, 
+            'Content-Type': 'application/json'
+        },
+        data : data
+        };
+
+        axios.request(config)
+        .then((response) => {
+            console.log(response.data);
+            let userObj = {...response.data, accessToken: user.accessToken};
+            localStorage.setItem("user", JSON.stringify(userObj));
+            setUser(JSON.parse(localStorage.getItem('user')));
+            setRatings(response.data.ratings);
+
+        })
+        .catch((error) => {
+        console.log(error);
+        });
+
+        
     }
 
     async function getVideo(){
@@ -87,29 +131,18 @@ function Recipe(){
                         </iframe>
                     </div>
                 })}
-                {/* <iframe 
-                    width="560" 
-                    height="315" 
-                    src="https://www.youtube.com/embed/QY8dhl1EQfI" 
-                    title="YouTube video player" 
-                    frameBorder="0" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                    allowFullScreen>
-                </iframe> */}
+                
             <a rel="noopener noreferrer" href={`https://www.youtube.com/results?search_query=${data["title"]}`} target="_blank">More Videos</a>
 
             </div>
-            {/* <a id="moreVids" rel="noopener noreferrer" href={`https://www.youtube.com/results?search_query=${data["title"]}`} target="_blank">More Videos</a> */}
+            
             <div className="ratings">
                 <p>Did you give this recipe a try? Rate it!</p>
                 
                 <Rating
                     name="simple-controlled"
-                    value={ratings[data["id"]] || 0}
+                    value={(ratings && ratings.some(obj => { return obj.recipeId === data["id"]})) ? ratings.find(obj => { return obj.recipeId === data["id"]}).rating  : 0}
                     onChange={(event) => updateRatings(data["id"], event)}
-                    // onChange={(event, newValue) => {
-                    //     setValue(newValue);
-                    //     }}
                 />
             </div>
         </div>
