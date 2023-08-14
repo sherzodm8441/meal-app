@@ -11,6 +11,7 @@ function NavBar(){
                     <li><Link className="navLink">Searches</Link></li>
                     <li><Link className="navLink">Account</Link></li>
                     <li><Link className="navLink" key={'login'}to={'/login'}>Login</Link></li>
+                    <li><Link className="navLink" onClick={()=> console.log('logout')}>Logout</Link></li>
                 </ul>
             </div>
         </div>

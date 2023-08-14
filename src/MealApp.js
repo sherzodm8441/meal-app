@@ -11,10 +11,14 @@ import { pink } from "@mui/material/colors";
 
 
 function MealApp(){
+    let userObj = JSON.parse(localStorage.getItem('user'));
+
     const [ingredients, setIngredients] = useState(JSON.parse(localStorage.getItem('ingredients')) || []);
     const [recipe, setRecipe] = useState(JSON.parse(localStorage.getItem('recipe')) || []);
     const [recipes, setRecipes] = useState([])
-    const [hearts, setHearts] = useState(JSON.parse(localStorage.getItem("hearts")) || {});
+    // const [hearts, setHearts] = useState(JSON.parse(localStorage.getItem("hearts")) || {});
+    const [hearts, setHearts] = useState((userObj && userObj.favorites) ? userObj.favorites : []);
+    const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || {});
 
 
     function addIngredient(item){
@@ -27,18 +31,6 @@ function MealApp(){
         setIngredients(prevIngredients => prevIngredients.filter(prevIngredient => prevIngredient !== item));
     }
 
-    function initialHearts(){
-        recipe.forEach(element => {
-            let id = element["id"];
-            console.log(id)
-            if(!hearts[id]){
-                let obj = {...hearts};
-                obj[id] = false
-                setHearts(obj);
-            }
-        })
-        console.log(hearts)
-    }
 
     // function updateRatings(id, event){
     //     let obj = {...ratings};
@@ -46,11 +38,60 @@ function MealApp(){
     //     setRatings(obj);
     // }
 
-    function updateHearts(id){
-        let obj = {...hearts};
-        obj[id] = !obj[id];
-        console.log(obj[id]);
-        setHearts(obj);
+
+    async function updateHearts(id){
+        let index = hearts.findIndex(({recipeId})=>{
+            return recipeId == id;
+        })
+
+        let arr = [];
+
+        if(index > -1){
+            arr = [...hearts];
+            arr.splice(index, 1)
+            
+        }else{
+            arr = [...hearts];
+            arr.push({
+                recipeId: id,
+                fav: true
+            })
+            
+        }
+
+        let data = JSON.stringify({
+            "favorites": arr,
+        });
+
+
+        let config = {
+        method: 'put',
+        maxBodyLength: Infinity,
+        url: 'http://localhost:3001/api/user',
+        headers: { 
+            'token': `Bearer ${user.accessToken}`, 
+            'Content-Type': 'application/json'
+        },
+        data : data
+        };
+
+        axios.request(config)
+        .then((response) => {
+        // console.log(JSON.stringify(response.data));
+            console.log(response.data);
+            let userObj = {...response.data, accessToken: user.accessToken};
+            localStorage.setItem("user", JSON.stringify(userObj));
+            setUser(JSON.parse(localStorage.getItem('user')));
+            setHearts(response.data.favorites);
+
+        })
+        .catch((error) => {
+        console.log(error);
+        });
+
+        console.log(hearts);
+        console.log(user)
+
     }
 
     useEffect(() => {
@@ -58,7 +99,7 @@ function MealApp(){
     }, [ingredients])
 
     useEffect(() => {
-        localStorage.setItem("hearts", JSON.stringify(hearts));
+        // localStorage.setItem("hearts", JSON.stringify(hearts));
     }, [hearts]);
     
     async function getRecipeSpoon(){
@@ -86,30 +127,30 @@ function MealApp(){
             }
         );
     }
-    async function getVideo(){
-        await axios.get('https://youtube.googleapis.com/youtube/v3/search', {
-            params: {  
-                q: "how to make pizza",
-                key: process.env.REACT_APP_YT_KEY
-            }
-            })
-            .then(response => {
-                // setRecipe(JSON.stringify(response.data, null, 2));
-                // setRecipe(response.data);
-                // localStorage.setItem("recipe", JSON.stringify(response.data));
-                console.log(response.data); 
-            })
-            .catch(error => {
-                console.log(error)
-            }
-        );
-    }
+    // async function getVideo(){
+    //     await axios.get('https://youtube.googleapis.com/youtube/v3/search', {
+    //         params: {  
+    //             q: "how to make pizza",
+    //             key: process.env.REACT_APP_YT_KEY
+    //         }
+    //         })
+    //         .then(response => {
+    //             // setRecipe(JSON.stringify(response.data, null, 2));
+    //             // setRecipe(response.data);
+    //             // localStorage.setItem("recipe", JSON.stringify(response.data));
+    //             console.log(response.data); 
+    //         })
+    //         .catch(error => {
+    //             console.log(error)
+    //         }
+    //     );
+    // }
 
-    useEffect(()=> {
-        initialHearts()
-        console.log(hearts)
+    // useEffect(()=> {
+    //     initialHearts()
+    //     console.log(hearts)
 
-    }, [recipe])
+    // }, [recipe])
 
     useEffect(() => {
         setRecipes(
@@ -119,7 +160,7 @@ function MealApp(){
                         <Link id="link" key={currElem["id"]} to={`/recipes/${currElem["id"]}`} state={{data : currElem}}>{currElem["title"]}</Link>
                         <FavoriteIcon 
                             onClick={()=> updateHearts(currElem["id"])}
-                            style={{color: (hearts[currElem["id"]] ? "hotPink" : "lightCyan")}}
+                            style={{color: ((hearts.some((obj)=>obj.recipeId === currElem["id"])) ? "hotPink" : "lightCyan")}}
                         />
                     </div>
                     <img src={currElem["image"]} alt={currElem["title"]} className="image"/>
@@ -150,7 +191,7 @@ function MealApp(){
                         />
                     </div>
                     <button id="spoonBtn" onClick={() => getRecipeSpoon()}>Get recipe Spoon</button>
-                    <button id="spoonBtn" onClick={() => getVideo()}>Get video</button>
+                    {/* <button id="spoonBtn" onClick={() => getVideo()}>Get video</button> */}
                 </div>
 
                 <div className="recipesView">
