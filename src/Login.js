@@ -22,7 +22,7 @@ function App() {
         loginUsername: '',
         loginPassword: '',
         signupUsername: '',
-        signuPassword: ''
+        signupPassword: ''
     });
 
     const navigate = useNavigate();
@@ -60,11 +60,38 @@ function App() {
         );
     };
 
-    const handleSignupSubmit = (event) => {
+    const handleSignupSubmit = async (event) => {
         event.preventDefault();
     
         // console.log(form.loginUsername + ' ' + form.loginPassword);
         console.log(form.signupUsername + ' ' + form.signupPassword);
+
+        await axios.post('http://localhost:3001/api/auth/user', {
+                username: form.signupUsername,
+                password: form.signupPassword
+            })
+            .then(response => {
+                console.log(response); 
+                
+                axios.post('http://localhost:3001/api/auth/user/login', {
+                username: form.signupUsername,
+                password: form.signupPassword
+                })
+                .then(response => {
+                    console.log(response); 
+                    setUser(response.data);
+                    localStorage.setItem("user", JSON.stringify(response.data));
+                    navigate("/");
+                })
+                .catch(error => {
+                    console.log(error)
+                }
+        );
+            })
+            .catch(error => {
+                console.log(error)
+            }
+        );
     };
 
   const [justifyActive, setJustifyActive] = useState('tab1');;
