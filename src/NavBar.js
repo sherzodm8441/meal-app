@@ -1,4 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
+import Modal from "./Modal";
 
 
 function NavBar(){
@@ -15,6 +16,7 @@ function NavBar(){
     return (
         <div className="navbar">
             <h3 style={{color: 'lightcyan'}}>MealIt</h3>
+            {/* <Modal/> */}
             <div className="menu">
                 <ul>
                     {/* <li><Link className="navLink">Favorites</Link></li> */}

@@ -2,6 +2,7 @@ import { useLocation, useParams } from "react-router-dom";
 import { Rating } from "@mui/material";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Modal from "./Modal";
 
 
 function Recipe(){
@@ -12,6 +13,11 @@ function Recipe(){
     const [ratings, setRatings] = useState((userObj && userObj.ratings) ? userObj.ratings : []);
     const [videos, SetVideos] = useState(JSON.parse(localStorage.getItem("videos")) || {});
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || {});
+    const [modal, setModal] = useState(false);
+
+    function handleModal(){
+        setModal(false);
+    }
 
 
     useEffect(()=>{
@@ -21,6 +27,11 @@ function Recipe(){
     }, [])
 
     async function updateRatings(id, event){
+        if(!localStorage.getItem('user')){
+            setModal(true);
+            return;
+        }
+
         let index = ratings.findIndex(({recipeId})=>{
             return recipeId == id;
         })
@@ -47,7 +58,7 @@ function Recipe(){
         let config = {
         method: 'put',
         maxBodyLength: Infinity,
-        url: 'http://localhost:3001/api/user',
+        url: 'https://meal-app-backend-ihtf.onrender.com/api/user',
         headers: { 
             'token': `Bearer ${user.accessToken}`, 
             'Content-Type': 'application/json'
@@ -145,6 +156,7 @@ function Recipe(){
                     onChange={(event) => updateRatings(data["id"], event)}
                 />
             </div>
+            <Modal value={modal} handleModal={handleModal}/>
         </div>
     );
 }

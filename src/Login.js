@@ -39,7 +39,7 @@ function App() {
     const handleLoginSubmit = async (event) => {
         event.preventDefault();
         
-        await axios.post('http://localhost:3001/api/auth/user/login', {
+        await axios.post('https://meal-app-backend-ihtf.onrender.com/api/auth/user/login', {
                 username: form.loginUsername,
                 password: form.loginPassword
             })

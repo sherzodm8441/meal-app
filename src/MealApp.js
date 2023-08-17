@@ -7,6 +7,7 @@ import './index.css';
 import { Link } from "react-router-dom";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { pink } from "@mui/material/colors";
+import Modal from "./Modal";
 
 
 function MealApp(){
@@ -17,7 +18,12 @@ function MealApp(){
     const [recipes, setRecipes] = useState([])
     const [hearts, setHearts] = useState((userObj && userObj.favorites) ? userObj.favorites : []);
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || {});
+    const [modal, setModal] = useState(false);
 
+
+    function handleModal(){
+        setModal(false);
+    }
 
     function addIngredient(item){
         if(!(ingredients.includes(item))){
@@ -31,6 +37,11 @@ function MealApp(){
 
 
     async function updateHearts(id){
+        if(!localStorage.getItem('user')){
+            setModal(true);
+            return;
+        }
+
         let index = hearts.findIndex(({recipeId})=>{
             return recipeId == id;
         })
@@ -58,7 +69,7 @@ function MealApp(){
         let config = {
         method: 'put',
         maxBodyLength: Infinity,
-        url: 'http://localhost:3001/api/user',
+        url: 'https://meal-app-backend-ihtf.onrender.com/api/user',
         headers: { 
             'token': `Bearer ${user.accessToken}`, 
             'Content-Type': 'application/json'
@@ -158,6 +169,7 @@ function MealApp(){
                 <div className="recipesView">
                     <div className="links">{recipes}</div>
                 </div>
+                <Modal value={modal} handleModal={handleModal}/>
             </div>
         </React.Fragment>
     );
