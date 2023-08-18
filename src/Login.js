@@ -90,33 +90,54 @@ function App() {
     const handleSignupSubmit = async (event) => {
         event.preventDefault();
 
-        
-            await axios.post('https://meal-app-backend-ihtf.onrender.com/api/auth/user', {
-                    username: form.signupUsername,
-                    password: form.signupPassword
+
+        let data = JSON.stringify({
+            "username": form.signupUsername,
+            "password": form.signupPassword
+        });
+
+
+        let config = {
+        method: 'post',
+        maxBodyLength: Infinity,
+        url: 'https://meal-app-backend-ihtf.onrender.com/api/auth/user',
+        headers: { 
+            'Content-Type': 'application/json'
+            },
+        data : data
+        };
+
+        trackPromise(
+            axios.request(config)
+            .then((response) => {
+                let config2 = {
+                    method: 'post',
+                    maxBodyLength: Infinity,
+                    url: 'https://meal-app-backend-ihtf.onrender.com/api/auth/user/login',
+                    headers: { 
+                        'Content-Type': 'application/json'
+                        },
+                    data : data
+                };
+            
+                
+                axios.request(config2)
+                .then((response) => {
+                    setUser(response.data);
+                    localStorage.setItem("user", JSON.stringify(response.data));
+                    navigate("/");
+    
                 })
-                .then(response => {
-                    console.log(response); 
-                    
-                    axios.post('https://meal-app-backend-ihtf.onrender.com/api/auth/user/login', {
-                    username: form.signupUsername,
-                    password: form.signupPassword
-                    })
-                    .then(response => {
-                        console.log(response); 
-                        setUser(response.data);
-                        localStorage.setItem("user", JSON.stringify(response.data));
-                        navigate("/");
-                    })
-                    .catch(error => {
-                        console.log(error)
-                    }
-            );
+                .catch((error) => {
+                console.log(error);
                 })
-                .catch(error => {
-                    console.log(error)
-                }
-            )
+                
+
+            })
+            .catch((error) => {
+            console.log(error);
+            })
+        )
         
     };
 
