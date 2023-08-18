@@ -41,21 +41,6 @@ function App() {
     const handleLoginSubmit = async (event) => {
         event.preventDefault();
         
-        // trackPromise(
-        //     await axios.post('https://meal-app-backend-ihtf.onrender.com/api/auth/user/login', {
-        //         username: form.loginUsername,
-        //         password: form.loginPassword
-        //     }).then((response) => {
-        //         // console.log(response); 
-                // setUser(response.data);
-                // localStorage.setItem("user", JSON.stringify(response.data));
-                // // navigate("/");
-        //     })
-        //     .catch(error => {
-        //         console.log(error)
-        //     }
-        //     )
-        // )
 
         let data = JSON.stringify({
             "username": form.loginUsername,

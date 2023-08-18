@@ -15,7 +15,7 @@ function NavBar(){
 
     return (
         <div className="navbar">
-            <h3 style={{color: 'lightcyan'}}>MealIt</h3>
+            <h3 style={{color: 'lightcyan', marginLeft: "25px"}}>MealIt</h3>
             {/* <Modal/> */}
             <div className="menu">
                 <ul>
