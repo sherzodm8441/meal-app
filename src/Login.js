@@ -15,6 +15,8 @@ import {
 from 'mdb-react-ui-kit';
 
 import { useNavigate } from "react-router-dom";
+import { trackPromise } from 'react-promise-tracker';
+
 
 function App() {
 
@@ -39,51 +41,83 @@ function App() {
     const handleLoginSubmit = async (event) => {
         event.preventDefault();
         
-        await axios.post('https://meal-app-backend-ihtf.onrender.com/api/auth/user/login', {
-                username: form.loginUsername,
-                password: form.loginPassword
-            })
-            .then(response => {
-                console.log(response); 
+        // trackPromise(
+        //     await axios.post('https://meal-app-backend-ihtf.onrender.com/api/auth/user/login', {
+        //         username: form.loginUsername,
+        //         password: form.loginPassword
+        //     }).then((response) => {
+        //         // console.log(response); 
+                // setUser(response.data);
+                // localStorage.setItem("user", JSON.stringify(response.data));
+                // // navigate("/");
+        //     })
+        //     .catch(error => {
+        //         console.log(error)
+        //     }
+        //     )
+        // )
+
+        let data = JSON.stringify({
+            "username": form.loginUsername,
+            "password": form.loginPassword
+        });
+
+
+        let config = {
+        method: 'post',
+        maxBodyLength: Infinity,
+        url: 'https://meal-app-backend-ihtf.onrender.com/api/auth/user/login',
+        headers: { 
+            'Content-Type': 'application/json'
+          },
+        data : data
+        };
+
+        trackPromise(
+            axios.request(config)
+            .then((response) => {
                 setUser(response.data);
                 localStorage.setItem("user", JSON.stringify(response.data));
                 navigate("/");
+
             })
-            .catch(error => {
-                console.log(error)
-            }
-        );
+            .catch((error) => {
+            console.log(error);
+            })
+        )
     };
 
     const handleSignupSubmit = async (event) => {
         event.preventDefault();
 
-        await axios.post('http://localhost:3001/api/auth/user', {
-                username: form.signupUsername,
-                password: form.signupPassword
-            })
-            .then(response => {
-                console.log(response); 
-                
-                axios.post('http://localhost:3001/api/auth/user/login', {
-                username: form.signupUsername,
-                password: form.signupPassword
+        
+            await axios.post('https://meal-app-backend-ihtf.onrender.com/api/auth/user', {
+                    username: form.signupUsername,
+                    password: form.signupPassword
                 })
                 .then(response => {
                     console.log(response); 
-                    setUser(response.data);
-                    localStorage.setItem("user", JSON.stringify(response.data));
-                    navigate("/");
+                    
+                    axios.post('https://meal-app-backend-ihtf.onrender.com/api/auth/user/login', {
+                    username: form.signupUsername,
+                    password: form.signupPassword
+                    })
+                    .then(response => {
+                        console.log(response); 
+                        setUser(response.data);
+                        localStorage.setItem("user", JSON.stringify(response.data));
+                        navigate("/");
+                    })
+                    .catch(error => {
+                        console.log(error)
+                    }
+            );
                 })
                 .catch(error => {
                     console.log(error)
                 }
-        );
-            })
-            .catch(error => {
-                console.log(error)
-            }
-        );
+            )
+        
     };
 
   const [justifyActive, setJustifyActive] = useState('tab1');;

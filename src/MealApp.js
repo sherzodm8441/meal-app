@@ -162,7 +162,7 @@ function MealApp(){
                             deleteIngredient={deleteIngredient}
                         />
                     </div>
-                    <button id="spoonBtn" onClick={() => getRecipeSpoon()}>Get recipe Spoon</button>
+                    <button id="spoonBtn" onClick={() => getRecipeSpoon()}>Get Recipes</button>
                     {/* <button id="spoonBtn" onClick={() => getVideo()}>Get video</button> */}
                 </div>
 

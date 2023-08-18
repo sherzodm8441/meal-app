@@ -5,10 +5,11 @@ import NotFound from './NotFound';
 import Recipe from './Recipe';
 import NavBar from './NavBar';
 import Login from './Login';
+import  Spinner from './Spinner';
 
 function App() {
   return (
-    <div>
+    <Spinner children={<div>
       <NavBar />
       <Routes>
         <Route path="/" element={<MealApp />}/>
@@ -16,8 +17,7 @@ function App() {
         <Route path="/recipes/:id/*" element={<Recipe />}/>
         <Route path="*" element={<NotFound />}/>
       </Routes>
-    </div>
-    
+    </div>}/>
   );
 }
 
