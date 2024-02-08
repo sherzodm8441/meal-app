@@ -130,7 +130,14 @@ function Recipe(){
             </div>
             <div className="video">
                 {videos[data["id"]] && videos[data["id"]].map((video) => {
-                    return <div className="iFrame">
+                    return <div style={{border: "1px solid black", 
+                    borderRadius: "10px", 
+                    overflow: "hidden",
+                    margin: "10px",
+                    height: "100%",
+                    width: "auto",
+                    paddingBottom: "0",
+                    backgroundColor: "black"}} className="iFrame">
                         <iframe 
                             width="560" 
                             height="315" 

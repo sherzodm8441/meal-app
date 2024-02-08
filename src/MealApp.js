@@ -135,7 +135,9 @@ function MealApp(){
                             style={{color: ((hearts.some((obj)=>obj.recipeId === currElem["id"])) ? "hotPink" : "lightCyan")}}
                         />
                     </div>
-                    <img src={currElem["image"]} alt={currElem["title"]} className="image"/>
+                    <div className="imgContainer">
+                        <img src={currElem["image"]} alt={currElem["title"]} className="image"/>
+                    </div>
                     <p>Ingredients from your list: {currElem["usedIngredientCount"]}</p>
                     </div>
             })
